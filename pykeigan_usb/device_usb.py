@@ -97,11 +97,11 @@ if __name__ == '__main__':
         print(f'\tReg: {readData[4]}')
         print(f'\tVal: {struct.unpack(">f", readData[5:9])[0]}')
 
-        # Motor information
-        _ = device.clearReadBuffer()
-        device.sendRequest(0x49, 0x00, b'\x00\x00')
-        readData = device.readAll()
-        print(readData.decode('utf-8'))
+        # # Motor information
+        # _ = device.clearReadBuffer()
+        # device.sendRequest(0x49, 0x00, b'\x00\x00')
+        # readData = device.readAll()
+        # print(readData.decode('utf-8'))
 
     except:        
         traceback.print_exc()

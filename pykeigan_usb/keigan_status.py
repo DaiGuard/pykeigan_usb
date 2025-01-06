@@ -32,7 +32,7 @@ class KeiganStatus(KeiganBase):
         # 0: none, 1, velocity, 2: position, 3: torque, 255: others
         self.modeMotorControl = 0
 
-    def updateStatus(self):
+    def updateStatus(self) -> None:
 
         self.device.sendRequest(0x9a, 0x0000, b'')
         readData = self.device.recvResponse()
@@ -59,12 +59,6 @@ if __name__ == '__main__':
 
     try:
         keigan = KeiganStatus(port='/dev/ttyUSB0', timeout=0.1)
-
-        # keigan.device.sendRequest(0x51, 0, b'')
-        # keigan.device.sendRequest(0xea, 0, b'')
-        # keigan.device.sendRequest(0x58, 0, struct.pack('>f', 200.0))
-        # keigan.device.sendRequest(0x60, 0, b'')
-        # keigan.device.sendRequest(0x50, 0, b'')
 
         keigan.updateStatus()
 

@@ -6,7 +6,7 @@ class KeiganInfo(KeiganBase):
     def __init__(self, port, timeout = 0.1):
         super().__init__(port, timeout)
 
-    def printInformation(self):
+    def printInformation(self) -> None:
         _ = self.device.readAll()
         self.device.sendRequest(0x49, 0, b'\x00\x00')
         readData = self.device.readAll()

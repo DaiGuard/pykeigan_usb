@@ -14,9 +14,9 @@ classDiagram
         DeviceUSB
         DeviceUSB: deviceName
         DeviceUSB: deviceCom
-        DeviceUSB: sendRequest(command, task_id, values)
-        DeviceUSB: recvResponse(command, task_id)
-        DeviceUSB: readAll()
+        DeviceUSB: sendRequest(command, task_id, values) -> bool
+        DeviceUSB: recvResponse(command, task_id) -> bytes
+        DeviceUSB: readAll() -> bytes
         DeviceUSB: clearReadBuffer()
 
     class KeiganInfo
@@ -33,6 +33,79 @@ classDiagram
         KeiganStatus: stateFlashMem
         KeiganStatus: modeMotorControl
         KeiganStatus: updateStatus()
+
+    class KeiganLED
+        KeiganLED
+        KeiganLED: color
+        KeiganLED: mode
+        KeiganLED: setColor(color)
+        KeiganLED: setMode(mode)
+
+    class KeiganSetting
+        KeiganSetting
+        KeiganSetting: maxSpeed
+        KeiganSetting: minSpeed
+        KeiganSetting: curveType
+        KeiganSetting: acc
+        KeiganSetting: dec
+        KeiganSetting: maxTorque
+        KeiganSetting: qCurrentP
+        KeiganSetting: qCurrentI
+        KeiganSetting: qCurrentD
+        KeiganSetting: speedP
+        KeiganSetting: speedI
+        KeiganSetting: speedD
+        KeiganSetting: positionP
+        KeiganSetting: interface
+        KeiganSetting: ownColor
+        KeiganSetting: resetPID()
+        KeiganSetting: saveAllRegisters()
+        KeiganSetting: resetAllRegisters()
+        KeiganSetting: getMaxSpeed() -> float
+        KeiganSetting: setMaxSpeed(value)
+        KeiganSetting: resetMaxSpeed()
+        KeiganSetting: getMinSpeed() -> float
+        KeiganSetting: setMinSpeed(value)
+        KeiganSetting: resetMinSpeed()
+        KeiganSetting: getCurveType() -> int
+        KeiganSetting: setCurveType(value)
+        KeiganSetting: resetCurveType()
+        KeiganSetting: getAcc() -> float
+        KeiganSetting: setAcc(value)
+        KeiganSetting: resetAcc()
+        KeiganSetting: getDec() -> float
+        KeiganSetting: setDec(value)
+        KeiganSetting: resetDec()
+        KeiganSetting: getMaxTorque() -> float
+        KeiganSetting: setMaxTorque(value)
+        KeiganSetting: resetMaxTorque()
+        KeiganSetting: getQCurrentP() -> float
+        KeiganSetting: setQCurrentP(value)
+        KeiganSetting: resetQCurrentP()
+        KeiganSetting: getQCurrentI() -> float
+        KeiganSetting: setQCurrentI(value)
+        KeiganSetting: resetQCurrentI()
+        KeiganSetting: getQCurrentD() -> float
+        KeiganSetting: setQCurrentD(value)
+        KeiganSetting: resetQCurrentD()
+        KeiganSetting: getSpeedP() -> float
+        KeiganSetting: setSpeedP(value)
+        KeiganSetting: resetSpeedP()
+        KeiganSetting: getSpeedI() -> float
+        KeiganSetting: setSpeedI(value)
+        KeiganSetting: resetSpeedI()
+        KeiganSetting: getSpeedD() -> float
+        KeiganSetting: setSpeedD(value)
+        KeiganSetting: resetSpeedD()
+        KeiganSetting: getPositionP() -> float
+        KeiganSetting: setPositionP(value)
+        KeiganSetting: resetPositionP()
+        KeiganSetting: getInterface() -> int
+        KeiganSetting: setInterface(value)
+        KeiganSetting: resetInterface()
+        KeiganSetting: getOwnColor() -> int
+        KeiganSetting: setOwnColor(value)
+        KeiganSetting: resetOwnColor()
 
     KeiganMotorUSB <|.. KeiganInfo
     KeiganMotorUSB <|.. KeiganStatus
