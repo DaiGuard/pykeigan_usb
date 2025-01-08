@@ -1,5 +1,7 @@
+from typing import Tuple
 import serial
 import re
+import binascii
 
 
 class DeviceUSB:
@@ -8,6 +10,9 @@ class DeviceUSB:
 
         self.preamble = b'\x00\x00\xaa\xaa'
         self.postamble = b'\x0d\x0a'
+        search = self.preamble.hex() + '.*?' + self.postamble.hex()
+
+        self.matchData = re.compile(search)
 
         self.deviceName = port
         self.baudrate = 115200
@@ -39,14 +44,21 @@ class DeviceUSB:
 
         return True
     
-    def recvResponse(self) -> bytes:
+    def recvResponse(self) -> Tuple[bool, bytes]:
 
         readData = self.readAll()
+        readText = readData.hex()
 
-        search = self.preamble + b'.*?' + self.postamble
-        data = re.findall(search, readData)[-1]
+        ret = False
 
-        return data[4:-2]
+        try:
+            dataText = self.matchData.findall(readText)[-1]
+            data = binascii.unhexlify(dataText)
+            ret = True
+        except IndexError:
+            ret = False
+
+        return ret, data[4:-2]
 
     def readAll(self) -> bytes:
 
@@ -91,7 +103,7 @@ if __name__ == '__main__':
 
         # Read register
         device.sendRequest(0x40, 0, b'\x02')
-        readData = device.recvResponse()
+        _, readData = device.recvResponse()
 
         print("* Max Speed")
         print(f'\tReg: {readData[4]}')

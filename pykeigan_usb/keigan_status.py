@@ -32,10 +32,13 @@ class KeiganStatus(KeiganBase):
         # 0: none, 1, velocity, 2: position, 3: torque, 255: others
         self.modeMotorControl = 0
 
-    def updateStatus(self) -> None:
+    def updateStatus(self) -> bool:
 
         self.device.sendRequest(0x9a, 0x0000, b'')
-        readData = self.device.recvResponse()
+        ret, readData = self.device.recvResponse()
+
+        if not ret:
+            return False
 
         field_size = readData[0]
         data_type = readData[1]
@@ -50,6 +53,7 @@ class KeiganStatus(KeiganBase):
         self.stateFlashMem = values[1]
         self.modeMotorControl = values[2]
         
+        return True
 
 
 if __name__ == '__main__':
@@ -60,8 +64,9 @@ if __name__ == '__main__':
     try:
         keigan = KeiganStatus(port='/dev/ttyUSB0', timeout=0.1)
 
-        keigan.updateStatus()
+        ret = keigan.updateStatus()
 
+        print("result: ", ret)
         print("motor enable: ", keigan.enableMotor)
         print("queue state : ", keigan.stateMotorQueue)
         print("motor meas enable : ", keigan.enableMotorMeas)
