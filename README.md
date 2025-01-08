@@ -2,6 +2,10 @@
 
 Keigan motor control library for connected usb
 
+[KeiganMotor KM-1U](https://keigan-motor.com/km-1u/)
+
+![](https://keiganmotor.myshopify.com/cdn/shop/products/fdf_480x352.jpg?v=1575011803)
+
 ---
 
 ```mermaid
@@ -129,3 +133,4 @@ classDiagram
 
 * [ ] CRC16 check enable
 * [ ] Read buffer reset slow
+* [ ] Unit Test
