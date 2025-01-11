@@ -12,7 +12,6 @@ class KeiganInfo(KeiganBase):
         readData = self.device.readAll()
         print(readData.decode('utf-8'))
 
-
 if __name__ == '__main__':
 
     import traceback

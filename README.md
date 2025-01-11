@@ -8,6 +8,28 @@ Keigan motor control library for connected usb
 
 ---
 
+### examples
+
+```python
+from pykeigan_usb import KeiganMotorUSB
+import time
+
+
+keigan = KeiganMotorUSB(port='/dev/ttyUSB0', timeout=0.1)
+
+keigan.enableMotion()
+
+keigan.setSpeed(100.0)
+keigan.runForward()
+time.sleep(5)
+keigan.stopMotion()
+
+keigan.disableMotion()
+
+```
+
+### class diagram
+
 ```mermaid
 classDiagram
     class KeiganBase
@@ -47,21 +69,6 @@ classDiagram
 
     class KeiganSetting
         KeiganSetting
-        KeiganSetting: maxSpeed
-        KeiganSetting: minSpeed
-        KeiganSetting: curveType
-        KeiganSetting: acc
-        KeiganSetting: dec
-        KeiganSetting: maxTorque
-        KeiganSetting: qCurrentP
-        KeiganSetting: qCurrentI
-        KeiganSetting: qCurrentD
-        KeiganSetting: speedP
-        KeiganSetting: speedI
-        KeiganSetting: speedD
-        KeiganSetting: positionP
-        KeiganSetting: interface
-        KeiganSetting: ownColor
         KeiganSetting: resetPID()
         KeiganSetting: saveAllRegisters()
         KeiganSetting: resetAllRegisters()
@@ -110,6 +117,32 @@ classDiagram
         KeiganSetting: getOwnColor() -> int
         KeiganSetting: setOwnColor(value)
         KeiganSetting: resetOwnColor()
+
+    class KeiganMotion
+        KeiganMotion
+        KeiganMotion: disableMotion()
+        KeiganMotion: enableMotion()
+        KeiganMotion: setSpeed(velocity)
+        KeiganMotion: presetPosition(position)
+        KeiganMotion: runForward()
+        KeiganMotion: runReverse()
+        KeiganMotion: runAtVelocity(velocity)
+        KeiganMotion: moveToPosition(potision)
+        KeiganMotion: moveByDistance(distance)
+        KeiganMotion: freeMotion()
+        KeiganMotion: stopMotion()
+        KeiganMotion: holdTorque()
+        KeiganMotion: doTaskset()
+        KeiganMotion: preparePlaybackMotion(index, repeating, option)
+        KeiganMotion: startPlaybackMotion()
+        KeiganMotion: stopPlaybackMotion()
+
+    class KeiganSystem
+        KeiganSystem
+        KeiganSystem: enableChecksum()
+        KeiganSystem: disableChecksum()
+        KeiganSystem: reboot()
+        KeiganSystem: enterDeviceFirmwareUpdate()
 
     KeiganMotorUSB <|.. KeiganInfo
     KeiganMotorUSB <|.. KeiganStatus

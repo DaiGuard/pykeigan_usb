@@ -28,7 +28,7 @@ class DeviceUSB:
         elif not self.deviceCom.writable():
             raise RuntimeError(f'can not write serial device: {self.deviceName}')
         
-    def sendRequest(self, command: int, task_id: int, values: bytes) -> bool:
+    def sendRequest(self, command: int, task_id: int, values: bytes = b'') -> bool:
 
         writeData = b''
 
