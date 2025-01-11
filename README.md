@@ -1,3 +1,5 @@
+<img src="https://github.com/DaiGuard/pykeigan_usb/actions/workflows/python-package.yml/badge.svg" />
+
 # pykeigan_usb
 
 Keigan motor control library for connected usb
