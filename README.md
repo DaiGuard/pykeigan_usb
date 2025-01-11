@@ -164,6 +164,7 @@ classDiagram
 
 ### To-Do
 
+* [ ] python package pip install
 * [ ] CRC16 check enable
 * [ ] Read buffer reset slow
 * [ ] Unit Test

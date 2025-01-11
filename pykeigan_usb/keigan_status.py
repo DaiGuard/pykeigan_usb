@@ -1,5 +1,4 @@
-#from pykeigan_usb.keigan_base import KeiganBase
-from keigan_base import KeiganBase
+from .keigan_base import KeiganBase
 
 
 class KeiganStatus(KeiganBase):

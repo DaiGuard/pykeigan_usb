@@ -1,8 +1,4 @@
-#from pykeigan_usb.keigan_base import KeiganBase
-from keigan_base import KeiganBase
-
-from typing import Tuple
-import struct
+from .keigan_base import KeiganBase
 
 
 class KeiganSystem(KeiganBase):
