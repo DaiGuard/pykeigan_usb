@@ -1,9 +1,12 @@
-from .keigan_base import KeiganBase
+from pykeigan_usb.keigan_base import KeiganBase
+from logging import getLogger
 
 
 class KeiganStatus(KeiganBase):
     def __init__(self, port: str, timeout: float = 0.1):
         super().__init__(port, timeout)
+
+        self.logger = getLogger(__name__)
 
         # True: enable checksum, False: disable checksum
         self.enableCheckSum = False
@@ -33,14 +36,20 @@ class KeiganStatus(KeiganBase):
 
     def updateStatus(self) -> bool:
 
-        self.device.sendRequest(0x9a, 0x0000, b'')
-        ret, readData = self.device.recvResponse()
-
+        ret = self.device.sendRequest(0x9a, 0x0000, b'')
         if not ret:
+            self.logger.error('error request [status]')
             return False
 
-        field_size = readData[0]
-        data_type = readData[1]
+        ret, readData = self.device.recvResponse()
+        if not ret:
+            self.logger.error('error response [status]')
+            return False
+
+        readData = readData[-1]
+        if readData[0] != 13 and readData[1] != 0x40:
+            return False
+
         values = readData[5:-2]
         
         self.enableMotor = values[0] & 0x01 > 0
@@ -58,21 +67,22 @@ class KeiganStatus(KeiganBase):
 if __name__ == '__main__':
 
     import traceback
-    import struct
 
     try:
         keigan = KeiganStatus(port='/dev/ttyUSB0', timeout=0.1)
 
         ret = keigan.updateStatus()
-
-        print("result: ", ret)
-        print("motor enable: ", keigan.enableMotor)
-        print("queue state : ", keigan.stateMotorQueue)
-        print("motor meas enable : ", keigan.enableMotorMeas)
-        print("imu enable : ", keigan.enableIMU)
-        print("checksum enable : ", keigan.enableCheckSum)
-        print("state flash memory : ", keigan.stateFlashMem)
-        print("mode motor ctrl : ", keigan.modeMotorControl)
+        if ret:
+            print("result: ", ret)
+            print("motor enable: ", keigan.enableMotor)
+            print("queue state : ", keigan.stateMotorQueue)
+            print("motor meas enable : ", keigan.enableMotorMeas)
+            print("imu enable : ", keigan.enableIMU)
+            print("checksum enable : ", keigan.enableCheckSum)
+            print("state flash memory : ", keigan.stateFlashMem)
+            print("mode motor ctrl : ", keigan.modeMotorControl)
+        else:
+            print('error')
 
     except:        
         traceback.print_exc()        

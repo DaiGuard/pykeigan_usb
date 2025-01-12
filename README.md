@@ -6,9 +6,30 @@ Keigan motor control library for connected usb
 
 [KeiganMotor KM-1U](https://keigan-motor.com/km-1u/)
 
-![](https://keiganmotor.myshopify.com/cdn/shop/products/fdf_480x352.jpg?v=1575011803)
+<img src="https://keiganmotor.myshopify.com/cdn/shop/products/fdf_480x352.jpg?v=1575011803" width="30%">
 
 ---
+
+### data format
+
+- request data format
+
+    | command  | task id  | values    | crc16   |
+    | ---      | ---     | ---       | ---     |
+    | 1 bytes  | 1 bytes | 0~n bytes | 2 bytes |
+
+- response data format
+
+    | priamble               | len     | tx type | values    | crc16   | postamble  |
+    | ---                    | ---     | ---     | ---       | ---     | ---        |
+    | 4 bytes                | 1 bytes | 1 bytes | 0~n bytes | 2 bytes | 2 bytes    |
+    | 0x00, 0x00, 0xAA, 0xAA |         |         |           |         | 0x0D, 0x0A |    
+
+### crc16 format
+
+The CRC check used is [CRC-16/KERMIT](https://crccalc.com/?crc=123456789&method=CRC-16/KERMIT&datatype=ascii&outtype=hex)
+
+initial data = [ 0x00, 0x00 ], polynominal = [ 0x84, 0x08 ]
 
 ### examples
 
@@ -163,10 +184,10 @@ classDiagram
     KeiganBase o-- DeviceUSB
 ```
 
-
 ### To-Do
 
-* [ ] python package pip install
-* [ ] CRC16 check enable
+* [x] python package pip install
+* [x] CRC16 check enable
+* [ ] response check
 * [ ] Read buffer reset slow
 * [ ] Unit Test

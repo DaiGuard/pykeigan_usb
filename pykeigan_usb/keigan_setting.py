@@ -25,7 +25,11 @@ class KeiganSetting(KeiganBase):
         self._ownColor = [0, 0, 0]
 
     def resetPID(self) -> bool:
-        return self.device.sendRequest(0x22, 0, b'')
+        ret = self.device.sendRequest(0x22, 0, b'')
+        if not ret:
+            return False
+
+        return True
 
     def saveAllRegisters(self) -> bool:
         return self.device.sendRequest(0x41, 0, b'')
@@ -88,6 +92,7 @@ class KeiganSetting(KeiganBase):
         self.device.sendRequest(0x40, 0, register.to_bytes(1, 'big'))
         ret, readData = self.device.recvResponse()
 
+        readData = readData[-1]
         if ret and readData[1] == 0x40 and readData[4] == register:
             ret = True
         else:
