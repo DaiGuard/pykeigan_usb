@@ -37,7 +37,7 @@ jobs:
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
     - name: Package install
       run: |
-        python -m pip install -e .
+        python -m pip install git+https://github.com/DaiGuard/pykeigan_usb.git
     # - name: Test with pytest
     #   run: |
     #     pytest

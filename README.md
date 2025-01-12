@@ -31,6 +31,12 @@ The CRC check used is [CRC-16/KERMIT](https://crccalc.com/?crc=123456789&method=
 
 initial data = [ 0x00, 0x00 ], polynominal = [ 0x84, 0x08 ]
 
+### installation
+
+```bash
+pip install git+https://github.com/DaiGuard/pykeigan_usb.git
+```
+
 ### examples
 
 ```python
