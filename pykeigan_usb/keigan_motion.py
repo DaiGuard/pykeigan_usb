@@ -1,4 +1,5 @@
-from .keigan_base import KeiganBase
+from typing import Tuple
+from pykeigan_usb.keigan_base import KeiganBase
 
 import struct
 
@@ -101,6 +102,32 @@ class KeiganMotion(KeiganBase):
     def stopPlaybackMotion(self) -> bool:
         return self.device.sendRequest(0x88, 0, b'')
 
+    def motoMeasurement(self) -> Tuple[bool, float, float, float]:
+        """measurement current position, velocity, torque
+
+        Returns:
+            Tuple[bool, float, float, float]: 
+                success,
+                position [rad]
+                velocity [rad/s]
+                torque [Nm]
+        """
+        ret = self.device.sendRequest(0xb4, 0, b'')
+        if not ret:
+            return False, 0.0, 0.0, 0.0
+        
+        ret, readData = self.device.recvResponse()
+        if not ret:
+            return False, 0.0, 0.0, 0.0
+
+        readData = readData[-1]
+
+        position = struct.unpack('>f', readData[2:6])[0]
+        velocity = struct.unpack('>f', readData[6:10])[0]
+        torque = struct.unpack('>f', readData[10:14])[0]
+
+        return True, position, velocity, torque
+
 
 if __name__ == '__main__':
 
@@ -108,7 +135,7 @@ if __name__ == '__main__':
     import time
     
     try:
-        keigan = KeiganMotion(port='/dev/ttyUSB0', timeout=0.1)
+        keigan = KeiganMotion(port='/dev/ttyUSB1', timeout=0.1)
 
         keigan.enableMotion()
 
@@ -152,6 +179,7 @@ if __name__ == '__main__':
         time.sleep(3)
 
         keigan.disableMotion()
+
 
     except:
         traceback.print_exc()
