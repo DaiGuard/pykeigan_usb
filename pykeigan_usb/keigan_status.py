@@ -35,6 +35,11 @@ class KeiganStatus(KeiganBase):
         self.modeMotorControl = 0
 
     def updateStatus(self) -> bool:
+        """update motor status
+
+        Returns:
+            bool: success
+        """
 
         ret = self.device.sendRequest(0x9a, 0x0000, b'')
         if not ret:
