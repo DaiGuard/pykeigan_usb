@@ -4,8 +4,10 @@ from pykeigan_usb.keigan_status import KeiganStatus
 from pykeigan_usb.keigan_led import KeiganLED
 from pykeigan_usb.keigan_motion import KeiganMotion
 from pykeigan_usb.keigan_system import KeiganSystem
+from pykeigan_usb.keigan_measurement import KeiganMeasurement
 
-class KeiganMotorUSB(KeiganInfo, KeiganSetting, KeiganStatus, KeiganLED, KeiganMotion, KeiganSystem):
+
+class KeiganMotorUSB(KeiganInfo, KeiganSetting, KeiganStatus, KeiganLED, KeiganMotion, KeiganSystem, KeiganMeasurement):
     def __init__(self, port, timeout = 0.1):
         super().__init__(port, timeout)
 
